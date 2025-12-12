@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404: Page Not Found (Like Your Savings) | The Impulse Judge</title>
+  <meta name="description" content="You clicked a link that doesn't exist. Probably looking for a discount code.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    .error-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    
+    .error-content {
+      max-width: 600px;
+    }
+    
+    .error-logo {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 30px;
+      filter: drop-shadow(0 8px 30px rgba(233, 69, 96, 0.4));
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-10px) rotate(-5deg); }
+      75% { transform: translateY(-5px) rotate(5deg); }
+    }
+    
+    .error-code {
+      font-size: 120px;
+      font-weight: 900;
+      color: var(--color-primary);
+      line-height: 1;
+      margin-bottom: 10px;
+      text-shadow: 0 0 60px rgba(233, 69, 96, 0.5);
+    }
+    
+    .error-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 20px;
+    }
+    
+    .error-message {
+      font-size: 18px;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+    
+    .error-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .error-subtext {
+      margin-top: 60px;
+      font-size: 14px;
+      color: var(--color-text-dim);
+    }
+    
+    .error-subtext a {
+      color: var(--color-primary);
+    }
+    
+    .error-subtext a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="error-page">
+    <div class="error-content">
+      <img src="icon.png" alt="The Impulse Judge" class="error-logo">
+      <div class="error-code">404</div>
+      <h1 class="error-title">Page Not Found</h1>
+      <p class="error-message">
+        This page doesn't exist.<br>
+        Kind of like The Judge's savings account in 2019.<br><br>
+        (He's better now. Mostly.)
+      </p>
+      <div class="error-buttons">
+        <a href="/" class="btn btn-primary btn-lg">← Back to Judgment</a>
+        <a href="/#install" class="btn btn-outline btn-lg">Install the Extension</a>
+      </div>
+      <p class="error-subtext">
+        Lost? Try our <a href="/blog/">blog</a> or <a href="/#faq">FAQ</a>.<br>
+        Or just admit you were looking for coupon codes.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

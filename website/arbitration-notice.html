@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arbitration Agreement Notice - The Impulse Judge™</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #e0e0e0;
+      line-height: 1.6;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .notice-container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 600px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    .warning-icon {
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    h1 {
+      color: #fff;
+      font-size: 1.75rem;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .subtitle {
+      color: #e94560;
+      font-size: 0.95rem;
+      text-align: center;
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+    .important-box {
+      background: rgba(233, 69, 96, 0.15);
+      border: 2px solid #e94560;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+    .important-box h2 {
+      color: #e94560;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+    .important-box p {
+      margin-bottom: 12px;
+      color: #e0e0e0;
+    }
+    .important-box ul {
+      margin-left: 24px;
+      margin-bottom: 12px;
+    }
+    .important-box li {
+      margin-bottom: 8px;
+      color: #e0e0e0;
+    }
+    .highlight {
+      background: rgba(46, 204, 113, 0.15);
+      border-left: 4px solid #2ecc71;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+    .highlight strong {
+      color: #2ecc71;
+    }
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .btn {
+      flex: 1;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    .btn-accept {
+      background: #2ecc71;
+      color: #fff;
+    }
+    .btn-accept:hover {
+      background: #27ae60;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+    }
+    .btn-optout {
+      background: rgba(233, 69, 96, 0.2);
+      color: #e94560;
+      border: 1px solid #e94560;
+    }
+    .btn-optout:hover {
+      background: rgba(233, 69, 96, 0.3);
+    }
+    .small-print {
+      font-size: 0.85rem;
+      color: #888;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .small-print a {
+      color: #e94560;
+      text-decoration: none;
+    }
+    .small-print a:hover {
+      text-decoration: underline;
+    }
+    .deadline {
+      background: rgba(255, 193, 7, 0.1);
+      border: 1px solid rgba(255, 193, 7, 0.5);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 16px 0;
+      text-align: center;
+      color: #ffc107;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="notice-container">
+    <div class="warning-icon">⚠️</div>
+    <h1>Important Legal Notice</h1>
+    <p class="subtitle">Please Read Carefully - Your Legal Rights Are Affected</p>
+
+    <div class="important-box">
+      <h2>Arbitration Agreement & Class Action Waiver</h2>
+      <p>By continuing to use The Impulse Judge, you agree to resolve any disputes through <strong>binding individual arbitration</strong> instead of going to court.</p>
+      
+      <p><strong>This means:</strong></p>
+      <ul>
+        <li>Disputes are resolved by a neutral arbitrator, not a judge or jury</li>
+        <li>You <strong>waive your right</strong> to participate in class action lawsuits</li>
+        <li>You <strong>waive your right</strong> to a jury trial</li>
+        <li>Arbitration proceedings are generally faster and less expensive than court</li>
+        <li>The arbitrator's decision is final and binding (limited appeal rights)</li>
+      </ul>
+
+      <p><strong>Geographic Scope:</strong> This arbitration provision applies to users in the <strong>United States and Canada</strong>. EU/UK consumers may have different rights under local consumer protection laws.</p>
+    </div>
+
+    <div class="highlight">
+      <p><strong>YOU HAVE THE RIGHT TO OPT OUT</strong></p>
+      <p>You may reject this arbitration agreement by emailing <a href="mailto:support@theimpulsejudge.com?subject=Arbitration%20Opt-Out" style="color: #2ecc71;">support@theimpulsejudge.com</a> with the subject line "Arbitration Opt-Out" within 30 days of first using the extension.</p>
+    </div>
+
+    <div class="deadline" id="deadline">
+      ⏰ You have until <strong id="deadline-date">DATE</strong> to opt out
+    </div>
+
+    <div class="button-group">
+      <button class="btn btn-accept" onclick="acceptTerms()">I Accept - Continue</button>
+      <button class="btn btn-optout" onclick="optOut()">I Want to Opt Out</button>
+    </div>
+
+    <p class="small-print">
+      By clicking "I Accept," you acknowledge that you have read and agree to the 
+      <a href="/terms.html" target="_blank">Terms of Use</a> (including the arbitration provision in Section 14) and 
+      <a href="/privacy.html" target="_blank">Privacy Policy</a>.
+    </p>
+  </div>
+
+  <script>
+    // Calculate deadline (30 days from today)
+    const today = new Date();
+    const deadline = new Date(today);
+    deadline.setDate(deadline.getDate() + 30);
+    
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('deadline-date').textContent = deadline.toLocaleDateString('en-US', options);
+
+    function acceptTerms() {
+      // Store acceptance in localStorage
+      localStorage.setItem('impulse_judge_terms_accepted', 'true');
+      localStorage.setItem('impulse_judge_terms_date', new Date().toISOString());
+      
+      // If opened in extension context, close the tab
+      if (window.opener) {
+        window.close();
+      } else {
+        // Redirect to main site
+        window.location.href = '/';
+      }
+    }
+
+    function optOut() {
+      // Pre-fill opt-out email
+      const subject = encodeURIComponent('Arbitration Opt-Out');
+      const body = encodeURIComponent(
+        'I am opting out of the arbitration agreement in Section 14 of The Impulse Judge Terms of Use.\n\n' +
+        'Full Name: [Your Name]\n' +
+        'Date of First Use: ' + new Date().toLocaleDateString() + '\n' +
+        'Email: [Your Email Address]\n\n' +
+        'I understand that by opting out, disputes will be resolved in Ontario courts rather than through arbitration.'
+      );
+      
+      window.open(`mailto:support@theimpulsejudge.com?subject=${subject}&body=${body}`);
+      
+      // Show confirmation after they send email
+      if (confirm('Have you sent the opt-out email? Click OK to continue using the extension.')) {
+        localStorage.setItem('impulse_judge_terms_accepted', 'true');
+        localStorage.setItem('impulse_judge_terms_date', new Date().toISOString());
+        localStorage.setItem('impulse_judge_arbitration_optout', 'true');
+        
+        if (window.opener) {
+          window.close();
+        } else {
+          window.location.href = '/';
+        }
+      }
+    }
+
+    // Check if terms already accepted
+    if (localStorage.getItem('impulse_judge_terms_accepted') === 'true') {
+      window.location.href = '/';
+    }
+  </script>
+</body>
+</html>

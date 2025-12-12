@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impulse Buy Judge</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Support Section - At Top, Compact -->
+    <section class="support-section-mini">
+      <a href="https://buymeacoffee.com/theimpulsejudge" target="_blank" class="coffee-btn-mini">
+        ☕ Did I save you money? Buy me a coffee!
+      </a>
+    </section>
+
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="header-content">
+        <span class="header-icon">⚖️</span>
+        <h1>The Impulse Judge</h1>
+      </div>
+      <p class="tagline">Your wallet's best friend</p>
+    </header>
+
+    <!-- Share Section - Moved to Top -->
+    <section class="share-section share-section-top">
+      <p class="share-title">🎉 Save your friends' wallets too!</p>
+      <div class="share-buttons">
+        <button class="share-btn" data-share="twitter" title="Share on X">𝕏</button>
+        <button class="share-btn" data-share="facebook" title="Share on Facebook">f</button>
+        <button class="share-btn" data-share="whatsapp" title="Share on WhatsApp">💬</button>
+        <button class="share-btn share-btn-copy" data-share="copy" title="Copy link">
+          <span class="copy-text">🔗 Copy</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Free Tools Section -->
+    <section class="tools-section">
+      <p class="tools-title">🧘 Free Tools</p>
+      <div class="tools-links">
+        <a href="https://theimpulsejudge.com/#fidget" target="_blank" class="tool-link">🎯 Free Therapy</a>
+        <a href="https://theimpulsejudge.com/#calculator" target="_blank" class="tool-link">🧮 Calculators</a>
+        <a href="https://theimpulsejudge.com/#certificate" target="_blank" class="tool-link">📜 Certificate</a>
+      </div>
+    </section>
+
+    <!-- Stats Overview -->
+    <section class="stats-overview">
+      <div class="stat-card primary">
+        <div class="stat-icon">💰</div>
+        <div class="stat-content">
+          <span class="stat-value" id="money-saved">$0.00</span>
+          <span class="stat-label">Money Saved</span>
+        </div>
+      </div>
+      
+      <div class="stats-row">
+        <div class="stat-card small success">
+          <span class="stat-value" id="resisted-count">0</span>
+          <span class="stat-label">Resisted</span>
+        </div>
+        <div class="stat-card small warning">
+          <span class="stat-value" id="accepted-count">0</span>
+          <span class="stat-label">Accepted</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Streak Section -->
+    <section class="streak-section">
+      <div class="streak-current">
+        <span class="streak-emoji" id="streak-emoji">🔥</span>
+        <div class="streak-info">
+          <span class="streak-count" id="current-streak">0</span>
+          <span class="streak-label">Current Streak</span>
+        </div>
+      </div>
+      <div class="streak-best">
+        <span class="best-label">Best:</span>
+        <span class="best-value" id="best-streak">0</span>
+        <span class="best-emoji">🏆</span>
+      </div>
+    </section>
+
+    <!-- Resistance Rate -->
+    <section class="rate-section">
+      <div class="rate-header">
+        <span>Resistance Rate</span>
+        <span class="rate-percentage" id="resistance-rate">0%</span>
+      </div>
+      <div class="rate-bar">
+        <div class="rate-fill" id="rate-fill"></div>
+      </div>
+      <p class="rate-message" id="rate-message">Start shopping to track your impulse resistance!</p>
+    </section>
+
+    <!-- Budget Section -->
+    <section class="budget-section">
+      <h3 class="section-title">💵 Monthly Budget</h3>
+      <div class="budget-container">
+        <div class="budget-input-row">
+          <span class="budget-currency">$</span>
+          <input type="number" id="monthly-budget" class="budget-input" placeholder="500" min="0" step="50">
+          <button id="save-budget" class="btn-save-budget">Save</button>
+        </div>
+        <div class="budget-status" id="budget-status">
+          <span class="budget-spent" id="budget-spent">$0</span>
+          <span class="budget-separator">/</span>
+          <span class="budget-total" id="budget-total">$0</span>
+          <span class="budget-label">this month</span>
+        </div>
+        <div class="budget-bar">
+          <div class="budget-fill" id="budget-fill"></div>
+        </div>
+        <div class="budget-warning" id="budget-warning" style="display: none;"></div>
+      </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section class="achievements-section">
+      <h3 class="section-title">🏅 Achievements</h3>
+      <div class="achievements-grid" id="achievements-grid">
+        <!-- Achievements will be dynamically inserted -->
+      </div>
+      <p class="achievements-progress" id="achievements-progress">0 of 20 unlocked</p>
+    </section>
+
+    <!-- Recent Activity -->
+    <section class="activity-section">
+      <h3 class="section-title">Recent Activity</h3>
+      <div class="activity-list" id="activity-list">
+        <div class="activity-empty">
+          <span>📝</span>
+          <p>No impulse purchases detected yet.<br>Go shopping to test your willpower!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section class="settings-section">
+      <h3 class="section-title">⚙️ Settings</h3>
+      
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>🔊 Voice Narration</span>
+          <span class="setting-desc">Read shame sentences aloud</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="voice-toggle">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>🔈 Sound Effects</span>
+          <span class="setting-desc">Play sounds on actions</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="sound-toggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>🎊 Confetti</span>
+          <span class="setting-desc">Celebrate when you resist</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="confetti-toggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>🔔 Notifications</span>
+          <span class="setting-desc">Daily & weekly summary alerts</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="notifications-toggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-label">
+          <span>🎯 Trigger On</span>
+          <span class="setting-desc">When to show the shame modal</span>
+        </div>
+        <select id="trigger-select" class="setting-select">
+          <option value="checkout">Checkout Only (default)</option>
+          <option value="addToCart">Add to Cart Only</option>
+          <option value="both">Both (more intrusive)</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Site Management Section -->
+    <section class="sites-section">
+      <h3 class="section-title">🌐 Site Management</h3>
+      
+      <div class="sites-tabs">
+        <button class="sites-tab active" data-tab="whitelist">Only These Sites</button>
+        <button class="sites-tab" data-tab="blacklist">Never On</button>
+      </div>
+
+      <div class="sites-content">
+        <div class="sites-panel active" id="whitelist-panel">
+          <p class="sites-desc">⚠️ If you add sites here, The Judge will ONLY work on these sites. Leave empty to work everywhere.</p>
+          <div class="sites-input-row">
+            <input type="text" id="whitelist-input" class="sites-input" placeholder="amazon.com">
+            <button id="add-whitelist" class="btn-add-site">Add</button>
+          </div>
+          <div class="sites-list" id="whitelist-list"></div>
+        </div>
+        <div class="sites-panel" id="blacklist-panel">
+          <p class="sites-desc">The Judge will never activate on these sites</p>
+          <div class="sites-input-row">
+            <input type="text" id="blacklist-input" class="sites-input" placeholder="example.com">
+            <button id="add-blacklist" class="btn-add-site">Add</button>
+          </div>
+          <div class="sites-list" id="blacklist-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Section -->
+    <section class="data-section">
+      <h3 class="section-title">📊 Data</h3>
+      <div class="data-buttons">
+        <button id="export-stats" class="btn-data">📤 Export</button>
+        <button id="import-stats" class="btn-data">📥 Import</button>
+        <input type="file" id="import-file" accept=".json" style="display: none;">
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <button class="btn-reset" id="reset-btn" title="Reset all statistics">
+        🔄 Reset Stats
+      </button>
+      <div class="footer-links">
+        <a href="https://theimpulsejudge.com" target="_blank" class="website-link" title="Visit our website">🌐</a>
+        <a href="https://theimpulsejudge.com/privacy.html" target="_blank" class="footer-link" title="Privacy Policy">Privacy</a>
+        <a href="https://theimpulsejudge.com/terms.html" target="_blank" class="footer-link" title="Terms of Use">Terms</a>
+      </div>
+      <span class="version">v1.0.3</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

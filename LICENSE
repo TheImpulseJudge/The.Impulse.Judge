@@ -1,0 +1,76 @@
+================================================================================
+IMPORTANT: SEPARATION OF CODE AND CONTENT
+
+1. THE SOFTWARE: The logic, algorithms, and functional source code of this 
+   extension are licensed under the MIT License (see below). You may fork,
+   modify, and use this code freely.
+
+2. THE CREATIVE ASSETS (PROPRIETARY): Our original creative expression is 
+   COPYRIGHTED and NOT licensed under MIT. This includes:
+   - The "Impulse Judge" name and "The Judge" persona/character
+   - The specific text of all "Roasts", jokes, and comedic dialogue
+   - Original visual designs and artwork we created
+   - Specific game/tool names (e.g., "Dopamine Dash", "Credit Defence", "Judge The Hype", "Mystery Box of Disappointment", "Roast Roulette")
+   - Original written content, website copy, and documentation humor
+   
+   EMOJI DISCLAIMER: We do NOT claim ownership over standard Unicode emojis 
+   or third-party icon assets. Our scale icon is based on standard emoji 
+   artwork and is not claimed as a proprietary trademark. We use emoji 
+   artwork under the applicable vendor licenses (e.g., Microsoft Fluent UI 
+   is MIT-licensed), which permits commercial use.
+   
+   See README.md for the complete list of proprietary creative assets.
+
+3. WHAT WE DO NOT CLAIM: Consistent with copyright law, we make no proprietary
+   claim to:
+   - Our current app icon/logo (based on third-party emoji artwork)
+   - Standard Unicode emojis used throughout the extension and website
+   - Game mechanics, mathematical formulas, generic concepts, functional
+     UI patterns, or other uncopyrightable elements
+   
+   You may build your own savings calculators, clicker games, swipe-judgment 
+   games, or impulse-control tools using similar concepts - just create your 
+   own original content.
+
+   If you fork this repository, you MUST remove all proprietary creative 
+   assets and replace them with your own. You may use the engine; you may 
+   not use the personality.
+================================================================================
+
+MIT License
+
+Copyright (c) 2025 The Impulse Judge Project
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+THIRD-PARTY OPEN SOURCE ATTRIBUTIONS
+
+This project uses the following third-party software:
+
+Browser APIs (No External Dependencies):
+- Chrome Extensions API (Manifest V3) - Provided by Google Chrome
+- Firefox WebExtensions API (Manifest V2) - Provided by Mozilla Firefox
+- Web Storage API - Standard browser API
+- DOM Manipulation APIs - Standard browser APIs
+
+All code is original or provided by standard browser APIs. This project has
+zero external npm dependencies or third-party libraries.
+
+================================================================================

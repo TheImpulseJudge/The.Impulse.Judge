@@ -1,0 +1,11 @@
+# The Impulse Judge - robots.txt
+# Allow all search engines to crawl all pages
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://theimpulsejudge.com/sitemap.xml
+
+# Crawl-delay (optional, be nice to servers)
+# Crawl-delay: 1
