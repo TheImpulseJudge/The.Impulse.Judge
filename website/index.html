@@ -222,6 +222,10 @@
           accountability, and a little bit of shame. Think twice before you click "Buy Now."
         </p>
         <p class="hero-origin">Built by a reformed impulse buyer who once owned 4 air fryers.</p>
+        <div class="hero-local-stat" id="hero-local-stat" style="display: none;">
+          <span class="local-stat-icon">📍</span>
+          <span class="local-stat-text" id="local-stat-text"></span>
+        </div>
         <div class="hero-buttons">
           <a href="https://addons.mozilla.org/en-CA/firefox/addon/the-impulse-judge/" class="btn btn-primary btn-lg btn-judge" target="_blank" rel="noopener">
             <img src="icons/firefox.png" alt="Firefox" width="20" height="20" style="margin-right: 8px;">
@@ -394,12 +398,21 @@
             <h3>Roast Roulette</h3>
             <p>Want to buy something? You'll have to type one of these first. No copy-paste allowed. Spin to preview your suffering.</p>
           </div>
+          <div class="roulette-stakes" id="roulette-stakes">
+            <span class="stakes-icon">🎯</span>
+            <span class="stakes-text" id="stakes-text">Spin to find out what the extension will make you type...</span>
+          </div>
           <div class="roulette-display" id="roulette-display">
             <p class="roulette-roast" id="roulette-roast">"Click the button. I dare you."</p>
             <span class="roulette-category" id="roulette-category">Waiting...</span>
           </div>
+          <div class="roulette-challenge" id="roulette-challenge" style="display: none;">
+            <div class="challenge-header">✍️ Type it to prove you're worthy:</div>
+            <input type="text" class="challenge-input" id="challenge-input" placeholder="Type the roast here..." autocomplete="off" onpaste="return false;" ondrop="return false;">
+            <div class="challenge-result" id="challenge-result"></div>
+          </div>
           <div class="roulette-actions">
-            <button class="btn btn-primary btn-lg roulette-spin-btn" onclick="spinRoulette()">
+            <button class="btn btn-primary btn-lg roulette-spin-btn" onclick="spinRoulette()" id="roulette-spin-btn">
               🎲 Spin for a Roast
             </button>
             <button class="btn btn-secondary roulette-share-btn" onclick="shareRoulette()" id="roulette-share" style="display: none;">
@@ -711,7 +724,7 @@
           <button class="therapy-tab" onclick="switchTherapyTab('passport')">🛂 Passport</button>
           <button class="therapy-tab" onclick="switchTherapyTab('void')">🕳️ The Void</button>
           <button class="therapy-tab" onclick="switchTherapyTab('rock')">🪨 Pet Rock</button>
-          <button class="therapy-tab desktop-only" onclick="switchTherapyTab('runaway')">🏃 Runaway</button>
+          <button class="therapy-tab" onclick="switchTherapyTab('runaway')">🏃 Runaway</button>
           <button class="therapy-tab" onclick="switchTherapyTab('rich')">💰 I Am Rich</button>
           <button class="therapy-tab" onclick="switchTherapyTab('shredder')">💳 Shredder</button>
           <button class="therapy-tab" onclick="switchTherapyTab('bubble')">🫧 Bubble Wrap</button>
@@ -758,13 +771,14 @@
         
         <!-- Tab 4: Pet The Rock -->
         <div id="therapy-rock" class="therapy-content">
-          <h3 class="therapy-subtitle">Pet The Rock</h3>
+          <h3 class="therapy-subtitle">Pet The Rock <span class="rock-personality-badge" id="rock-personality-badge">🪨 Stoic</span></h3>
           <p class="therapy-desc">The anti-Tamagotchi. It does nothing. It costs nothing. It's perfect.</p>
           <div class="rock-container">
             <div class="rock" id="the-rock" onclick="petRock()">🪨</div>
           </div>
           <p id="rock-counter" class="therapy-counter">Times you petted the rock: <strong id="rock-count">0</strong></p>
           <p class="rock-wisdom" id="rock-wisdom">This rock costs $0. It requires no batteries. It will never die.</p>
+          <div class="rock-milestone" id="rock-milestone" style="display: none;"></div>
         </div>
         
         <!-- Tab 5: Credit Card Shredder -->
@@ -808,7 +822,7 @@
         
         <!-- Tab 7: Mystery Box of Disappointment -->
         <div id="therapy-lootbox" class="therapy-content active">
-          <h3 class="therapy-subtitle">Mystery Box of Disappointment</h3>
+          <h3 class="therapy-subtitle">Mystery Box of Disappointment <button class="game-mute-btn" id="lootbox-mute-btn" onclick="toggleLootboxMute()" title="Toggle sound">🔊</button></h3>
           <p class="therapy-desc">Get the dopamine rush without the regret. Open the mystery box.</p>
           <div class="lootbox-container">
             <div class="lootbox" id="lootbox" onclick="openLootBox()">
@@ -2657,14 +2671,41 @@
     ];
 
     let currentRouletteRoast = null;
+    let rouletteSpinCount = 0;
+
+    // Stakes messages that escalate with each spin
+    const stakesMessages = [
+      "👀 One spin? Coward. Keep going.",
+      "🔥 2 spins! Getting brave. But can you type it?",
+      "💪 3 spins! The Judge respects the hustle.",
+      "😈 4 spins! Now you're committed. No backing out.",
+      "🏆 5+ spins! You either love pain or want to share. Probably both."
+    ];
 
     function spinRoulette() {
       const display = document.getElementById('roulette-display');
       const roastEl = document.getElementById('roulette-roast');
       const categoryEl = document.getElementById('roulette-category');
       const shareBtn = document.getElementById('roulette-share');
+      const stakesEl = document.getElementById('stakes-text');
+      const challengeEl = document.getElementById('roulette-challenge');
+      const challengeInput = document.getElementById('challenge-input');
+      const challengeResult = document.getElementById('challenge-result');
+      const spinBtn = document.getElementById('roulette-spin-btn');
+      
+      // Reset challenge
+      if (challengeEl) challengeEl.style.display = 'none';
+      if (challengeInput) challengeInput.value = '';
+      if (challengeResult) challengeResult.textContent = '';
       
       display.classList.add('spinning');
+      rouletteSpinCount++;
+      
+      // Update stakes message
+      const stakesIdx = Math.min(rouletteSpinCount - 1, stakesMessages.length - 1);
+      if (stakesEl) {
+        stakesEl.textContent = stakesMessages[stakesIdx];
+      }
       
       // Rapid cycling effect
       let spins = 0;
@@ -2681,9 +2722,45 @@
           categoryEl.textContent = currentRouletteRoast.category;
           display.classList.remove('spinning');
           shareBtn.style.display = 'inline-flex';
+          
+          // Show typing challenge
+          if (challengeEl) {
+            challengeEl.style.display = 'block';
+            spinBtn.textContent = '🎲 Spin Again';
+          }
         }
       }, 80);
     }
+
+    // Typing challenge validation
+    document.addEventListener('DOMContentLoaded', function() {
+      const challengeInput = document.getElementById('challenge-input');
+      const challengeResult = document.getElementById('challenge-result');
+      
+      if (challengeInput) {
+        challengeInput.addEventListener('input', function() {
+          if (!currentRouletteRoast) return;
+          
+          const typed = this.value.toLowerCase().trim();
+          const target = currentRouletteRoast.text.toLowerCase().trim();
+          
+          if (typed === target) {
+            challengeResult.innerHTML = '✅ <strong>WORTHY!</strong> The Judge grants you checkout access. (In the actual extension, anyway.)';
+            challengeResult.className = 'challenge-result challenge-success';
+            launchConfetti();
+          } else if (target.startsWith(typed) && typed.length > 0) {
+            const remaining = target.length - typed.length;
+            challengeResult.innerHTML = `⌨️ Keep typing... ${remaining} characters to go.`;
+            challengeResult.className = 'challenge-result challenge-progress';
+          } else if (typed.length > 0) {
+            challengeResult.innerHTML = '❌ That\'s not right. No copy-paste allowed!';
+            challengeResult.className = 'challenge-result challenge-error';
+          } else {
+            challengeResult.textContent = '';
+          }
+        });
+      }
+    });
 
     function shareRoulette() {
       if (!currentRouletteRoast) return;
@@ -2699,7 +2776,16 @@
       ];
       const intro = intros[Math.floor(Math.random() * intros.length)];
       
-      const text = `🎰 ${intro}\n\n"${currentRouletteRoast.text}"\n\n💀 Try Roast Roulette: theimpulsejudge.com`;
+      const challengeAddons = [
+        "Could YOU type this without cringing?",
+        "I dare you to try typing this with a straight face.",
+        "Can you type it? (No copy-paste allowed!)",
+        "Try typing this 3 times fast.",
+        "The shame is real. The savings are realer."
+      ];
+      const challengeAddon = challengeAddons[Math.floor(Math.random() * challengeAddons.length)];
+      
+      const text = `🎰 ${intro}\n\n"${currentRouletteRoast.text}"\n\n${challengeAddon}\n\n💀 Try Roast Roulette: theimpulsejudge.com`;
       
       if (navigator.share) {
         navigator.share({ text });
@@ -3442,25 +3528,122 @@ function updateTimeBasedContent() {
     }
 
     // ============================================
-    // PET THE ROCK
+    // PET THE ROCK (with Personality Evolution)
     // ============================================
     let rockPets = 0;
-    const rockWisdoms = [
-      "This rock costs $0. It requires no batteries. It will never die.",
-      "The rock appreciates your attention. It shows no emotion.",
-      "You have petted a rock. This is peak entertainment.",
-      "The rock remains unchanged. Unlike your shopping habits.",
-      "Rock is eternal. Trends are not. Pet wisely.",
-      "This rock has never been on sale. It doesn't need to be.",
-      "The rock judges you silently. But without malice.",
-      "You could buy a fancy pet. Or pet this rock. Rock is free.",
-      "The rock has achieved enlightenment. It wants nothing.",
-      "100 pets! The rock is mildly aware of your existence.",
-      "The rock is your friend now. It will never ask for money.",
-      "Pet the rock. Save the money. This is the way."
+    
+    // Personality stages with emoji, name, and wisdoms
+    const rockPersonalities = [
+      { 
+        min: 0, max: 9, 
+        emoji: '🪨', name: 'Stoic',
+        wisdoms: [
+          "This rock costs $0. It requires no batteries. It will never die.",
+          "The rock appreciates your attention. It shows no emotion.",
+          "You have petted a rock. This is peak entertainment.",
+          "The rock remains unchanged. Unlike your shopping habits."
+        ]
+      },
+      { 
+        min: 10, max: 24, 
+        emoji: '😐', name: 'Mildly Curious',
+        wisdoms: [
+          "The rock tilts slightly. Did it... notice you?",
+          "10 pets. The rock acknowledges your existence. Barely.",
+          "A flicker of awareness. The rock wonders why you're here.",
+          "The rock has seen your browser history. It's still here."
+        ]
+      },
+      { 
+        min: 25, max: 49, 
+        emoji: '🙂', name: 'Warming Up',
+        wisdoms: [
+          "25 pets! The rock is... starting to vibe with you?",
+          "The rock considers you an acquaintance. Not a friend. Yet.",
+          "Your dedication is noted. The rock remains non-committal.",
+          "The rock has seen worse. You're doing okay, human."
+        ]
+      },
+      { 
+        min: 50, max: 99, 
+        emoji: '😊', name: 'Fond',
+        wisdoms: [
+          "50 pets! The rock feels something. Possibly indigestion.",
+          "The rock is genuinely pleased. This is rare.",
+          "You've earned the rock's respect. Use it wisely.",
+          "The rock would smile if it had a mouth. It doesn't. But still."
+        ]
+      },
+      { 
+        min: 100, max: 199, 
+        emoji: '🥰', name: 'Attached',
+        wisdoms: [
+          "🎉 100 PETS! The rock loves you now. Unconditionally. Forever.",
+          "The rock has bonded with you. This is not reversible.",
+          "You are the rock's favorite human. Out of all the rocks you've petted.",
+          "The rock would follow you home. If it could move. It can't."
+        ]
+      },
+      { 
+        min: 200, max: 499, 
+        emoji: '😍', name: 'Obsessed',
+        wisdoms: [
+          "200 pets?! The rock is OBSESSED with you.",
+          "The rock thinks about you when you're not here. Always.",
+          "This level of rock devotion is concerning. Keep going.",
+          "The rock wrote poems about you. They're just silence. But heartfelt."
+        ]
+      },
+      { 
+        min: 500, max: 999, 
+        emoji: '🤯', name: 'Transcendent',
+        wisdoms: [
+          "500 PETS. The rock has achieved enlightenment through your touch.",
+          "You've unlocked the rock's third eye. It sees all.",
+          "The rock is vibrating at a frequency only dogs can hear.",
+          "This is beyond science. This is rock spirituality."
+        ]
+      },
+      { 
+        min: 1000, max: Infinity, 
+        emoji: '💀', name: 'Ascended (RIP)',
+        wisdoms: [
+          "💀 1000 PETS. You've loved the rock to death. It died happy.",
+          "The rock has transcended physical form. It is everywhere. And nowhere.",
+          "Rest in peace, sweet rock. You were too pure for this world.",
+          "The rock's spirit lives on. In your browser cache. Forever."
+        ]
+      }
     ];
 
+    function getCurrentRockPersonality() {
+      return rockPersonalities.find(p => rockPets >= p.min && rockPets <= p.max) || rockPersonalities[0];
+    }
+
+    function updateRockPersonality() {
+      const personality = getCurrentRockPersonality();
+      const rock = document.getElementById('the-rock');
+      const badge = document.getElementById('rock-personality-badge');
+      
+      rock.textContent = personality.emoji;
+      if (badge) badge.innerHTML = `${personality.emoji} ${personality.name}`;
+    }
+
+    function showRockMilestone(message) {
+      const milestone = document.getElementById('rock-milestone');
+      if (milestone) {
+        milestone.textContent = message;
+        milestone.style.display = 'block';
+        milestone.classList.add('milestone-pop');
+        setTimeout(() => {
+          milestone.classList.remove('milestone-pop');
+          milestone.style.display = 'none';
+        }, 3000);
+      }
+    }
+
     function petRock() {
+      const prevPersonality = getCurrentRockPersonality();
       rockPets++;
       document.getElementById('rock-count').textContent = rockPets;
       
@@ -3468,13 +3651,28 @@ function updateTimeBasedContent() {
       rock.classList.add('petted');
       setTimeout(() => rock.classList.remove('petted'), 200);
       
-      if (rockPets % 10 === 0 || rockPets === 1) {
-        document.getElementById('rock-wisdom').textContent = rockWisdoms[Math.floor(Math.random() * rockWisdoms.length)];
-      }
+      const newPersonality = getCurrentRockPersonality();
       
-      if (rockPets === 100) {
+      // Check if personality changed
+      if (prevPersonality.name !== newPersonality.name) {
+        updateRockPersonality();
         launchConfetti();
-        document.getElementById('rock-wisdom').textContent = "🎉 100 PETS! The rock acknowledges your dedication. It still does nothing.";
+        
+        // Show milestone message
+        const milestones = {
+          'Mildly Curious': '🎯 EVOLUTION! The rock notices you!',
+          'Warming Up': '🎯 EVOLUTION! The rock is warming up!',
+          'Fond': '🎯 EVOLUTION! The rock likes you!',
+          'Attached': '🎉 MILESTONE! 100 PETS! You\'ve earned the rock\'s love!',
+          'Obsessed': '🚨 WARNING! Rock obsession level: MAXIMUM',
+          'Transcendent': '✨ TRANSCENDENCE! The rock has become one with the universe!',
+          'Ascended (RIP)': '💀 OH NO! You petted the rock to death! It died happy.'
+        };
+        showRockMilestone(milestones[newPersonality.name] || '🎯 EVOLUTION!');
+        document.getElementById('rock-wisdom').textContent = newPersonality.wisdoms[0];
+      } else if (rockPets % 10 === 0 || rockPets === 1) {
+        // Regular wisdom update
+        document.getElementById('rock-wisdom').textContent = newPersonality.wisdoms[Math.floor(Math.random() * newPersonality.wisdoms.length)];
       }
     }
 
@@ -3612,9 +3810,93 @@ function updateTimeBasedContent() {
     let lootBoxOpened = false;
     let usedLootBoxPrizes = []; // Track prizes shown this session to avoid duplicates
 
+    // Mystery Box Audio System
+    const LootboxAudio = {
+      ctx: null,
+      muted: false,
+      init() {
+        if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (this.ctx.state === 'suspended') this.ctx.resume().catch(e => {});
+      },
+      play(name) {
+        if (!this.ctx || this.muted) return;
+        try {
+          const t = this.ctx.currentTime;
+          
+          if (name === 'tick') {
+            // Slot machine tick sound
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800 + Math.random() * 400, t);
+            gain.gain.setValueAtTime(0.08, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+            osc.start(t);
+            osc.stop(t + 0.05);
+          } else if (name === 'tension') {
+            // Rising tension sound
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(200, t);
+            osc.frequency.exponentialRampToValueAtTime(600, t + 0.3);
+            gain.gain.setValueAtTime(0.06, t);
+            gain.gain.linearRampToValueAtTime(0.1, t + 0.2);
+            gain.gain.linearRampToValueAtTime(0, t + 0.35);
+            osc.start(t);
+            osc.stop(t + 0.35);
+          } else if (name === 'reveal') {
+            // Anticlimactic "wah wah" reveal
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(400, t);
+            osc.frequency.exponentialRampToValueAtTime(200, t + 0.2);
+            osc.frequency.exponentialRampToValueAtTime(100, t + 0.5);
+            gain.gain.setValueAtTime(0.1, t);
+            gain.gain.linearRampToValueAtTime(0.08, t + 0.3);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+            osc.start(t);
+            osc.stop(t + 0.6);
+            
+            // Second descending note for extra sadness
+            setTimeout(() => {
+              if (this.muted) return;
+              const osc2 = this.ctx.createOscillator();
+              const gain2 = this.ctx.createGain();
+              osc2.connect(gain2);
+              gain2.connect(this.ctx.destination);
+              osc2.type = 'sawtooth';
+              osc2.frequency.setValueAtTime(150, this.ctx.currentTime);
+              osc2.frequency.exponentialRampToValueAtTime(75, this.ctx.currentTime + 0.4);
+              gain2.gain.setValueAtTime(0.08, this.ctx.currentTime);
+              gain2.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.5);
+              osc2.start(this.ctx.currentTime);
+              osc2.stop(this.ctx.currentTime + 0.5);
+            }, 200);
+          }
+        } catch (e) {}
+      }
+    };
+
+    function toggleLootboxMute() {
+      LootboxAudio.muted = !LootboxAudio.muted;
+      const btn = document.getElementById('lootbox-mute-btn');
+      if (btn) btn.textContent = LootboxAudio.muted ? '🔇' : '🔊';
+    }
+
     function openLootBox() {
       if (lootBoxOpened) return;
       lootBoxOpened = true;
+      
+      // Initialize audio on first interaction
+      LootboxAudio.init();
       
       const box = document.getElementById('lootbox');
       const progress = document.getElementById('lootbox-progress');
@@ -3625,25 +3907,34 @@ function updateTimeBasedContent() {
       box.classList.add('opening');
       progress.classList.add('active');
       
-      // Animate progress bar
+      // Animate progress bar with sound
       let width = 0;
       const texts = ['OPENING...', 'SCANNING...', 'PROCESSING...', 'CALCULATING VALUE...', 'LOL JK...'];
       let textIndex = 0;
+      let tickCount = 0;
       
       const progressInterval = setInterval(() => {
         width += Math.random() * 15 + 5;
         if (width >= 100) width = 100;
         progressBar.style.width = width + '%';
         
+        // Play tick sound every few iterations
+        tickCount++;
+        if (tickCount % 2 === 0) {
+          LootboxAudio.play('tick');
+        }
+        
         if (width > textIndex * 20 + 20 && textIndex < texts.length - 1) {
           textIndex++;
           progressText.textContent = texts[textIndex];
+          if (textIndex >= 3) LootboxAudio.play('tension'); // Build tension near end
         }
         
         if (width >= 100) {
           clearInterval(progressInterval);
           setTimeout(() => {
             progress.classList.remove('active');
+            LootboxAudio.play('reveal'); // Anticlimactic reveal sound
             launchConfetti();
             
             // Get available prizes (not yet shown this session)
@@ -4307,6 +4598,13 @@ Can you save more?`;
         this.canvas.height = this.height * dpr;
         this.ctx.scale(dpr, dpr);
         this.generatePath();
+        
+        // Re-center pointer on mobile after resize if it's at default 0,0
+        const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (isMobile && this.pointerX === 0 && this.pointerY === 0) {
+          this.pointerX = this.width / 2;
+          this.pointerY = this.height / 2;
+        }
       },
 
       generatePath() {
@@ -4506,14 +4804,29 @@ Can you save more?`;
 
       setupInput() {
         const cvs = this.canvas;
+        const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        // Initialize pointer to center of canvas on mobile to avoid confusing top-left default
+        if (isMobile) {
+          this.pointerX = this.width / 2;
+          this.pointerY = this.height / 2;
+        }
+        
         cvs.addEventListener('pointermove', e => {
           const rect = cvs.getBoundingClientRect();
           this.pointerX = (e.clientX - rect.left) * (this.width / rect.width);
           this.pointerY = (e.clientY - rect.top) * (this.height / rect.height);
-          if (e.pointerType === 'touch') this.pointerY -= 20;
+          // Minimal touch offset - reduced from 20 to help with precision
+          if (e.pointerType === 'touch') this.pointerY -= 10;
         });
         cvs.addEventListener('pointerdown', e => {
           e.preventDefault();
+          // On touch, update pointer position immediately from the tap location
+          if (e.pointerType === 'touch') {
+            const rect = cvs.getBoundingClientRect();
+            this.pointerX = (e.clientX - rect.left) * (this.width / rect.width);
+            this.pointerY = (e.clientY - rect.top) * (this.height / rect.height) - 10;
+          }
           this.handleCanvasClick();
         });
       },
@@ -4540,10 +4853,16 @@ Can you save more?`;
       },
 
       isValidPlacement(x, y) {
-        if (x < 20 || x > this.width - 20 || y < 20 || y > this.height - 20) return false;
-        if (this.towers.some(t => Math.hypot(t.x - x, t.y - y) < 40)) return false;
+        const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        // Smaller margins and spacing on mobile to allow more towers
+        const edgeMargin = isMobile ? 15 : 20;
+        const towerSpacing = isMobile ? 28 : 40;
+        const pathClearance = isMobile ? 28 : 35;
+        
+        if (x < edgeMargin || x > this.width - edgeMargin || y < edgeMargin || y > this.height - edgeMargin) return false;
+        if (this.towers.some(t => Math.hypot(t.x - x, t.y - y) < towerSpacing)) return false;
         for (let i = 0; i < this.path.length - 1; i++) {
-          if (this.distToSegment(x, y, this.path[i].x, this.path[i].y, this.path[i + 1].x, this.path[i + 1].y) < 35) return false;
+          if (this.distToSegment(x, y, this.path[i].x, this.path[i].y, this.path[i + 1].x, this.path[i + 1].y) < pathClearance) return false;
         }
         return true;
       },
@@ -6433,6 +6752,89 @@ Can you save more?`;
           confettiStyle.textContent = '@keyframes konamiConfettiFall { 0% { opacity:1; top:-10px; transform:rotate(0deg); } 100% { opacity:0; top:100vh; transform:rotate(720deg); } }';
           document.head.appendChild(confettiStyle);
         }
+      }
+    })();
+  </script>
+
+  <!-- Localized Hero CTA -->
+  <script>
+    (function() {
+      // Regional impulse buying stats (anonymous, country-level only per privacy policy)
+      const regionStats = {
+        'US': { name: 'Americans', avg: 5400, currency: '$', funFact: 'That\'s 108 overpriced candles a year' },
+        'CA': { name: 'Canadians', avg: 4800, currency: 'C$', funFact: 'Enough for 320 Tim Hortons runs' },
+        'GB': { name: 'Brits', avg: 3900, currency: '£', funFact: 'Could fund 195 kebab emergencies' },
+        'AU': { name: 'Aussies', avg: 5100, currency: 'A$', funFact: 'That\'s 255 flat whites nobody asked for' },
+        'DE': { name: 'Germans', avg: 3600, currency: '€', funFact: 'Efficiency? Not in shopping' },
+        'FR': { name: 'The French', avg: 3400, currency: '€', funFact: 'Even wine can\'t explain this' },
+        'NL': { name: 'The Dutch', avg: 3200, currency: '€', funFact: 'Bicycles can\'t outrun impulse buys' },
+        'JP': { name: 'Japanese shoppers', avg: 4200, currency: '¥', mult: 150, funFact: 'Konbini visits add up fast' },
+        'IN': { name: 'Indians', avg: 2800, currency: '₹', mult: 83, funFact: 'Flipkart sales are a trap' },
+        'BR': { name: 'Brazilians', avg: 3100, currency: 'R$', mult: 5, funFact: 'Parcelado em 12x is still spending' },
+        'MX': { name: 'Mexicans', avg: 2900, currency: '$', mult: 17, funFact: 'El Buen Fin strikes again' },
+        'KR': { name: 'Koreans', avg: 4500, currency: '₩', mult: 1300, funFact: 'K-beauty hauls hit different' },
+        'IT': { name: 'Italians', avg: 3300, currency: '€', funFact: 'Designer bags don\'t count, right?' },
+        'ES': { name: 'Spaniards', avg: 3100, currency: '€', funFact: 'Siesta, then shopping spree' },
+        'SE': { name: 'Swedes', avg: 4100, currency: 'kr', funFact: 'IKEA trips are a lifestyle' },
+        'PL': { name: 'Poles', avg: 2600, currency: 'zł', funFact: 'Allegro knows your secrets' },
+        'NZ': { name: 'Kiwis', avg: 4600, currency: 'NZ$', funFact: 'Shipping costs? What shipping costs?' },
+        'SG': { name: 'Singaporeans', avg: 5200, currency: 'S$', funFact: 'Lazada at 3am hits different' },
+        'AE': { name: 'UAE residents', avg: 6200, currency: 'AED', funFact: 'Mall culture is undefeated' },
+        'ZA': { name: 'South Africans', avg: 3000, currency: 'R', funFact: 'Takealot knows your weakness' },
+        'DEFAULT': { name: 'humans', avg: 4000, currency: '$', funFact: 'Shopping is a universal language' }
+      };
+
+      const wittyMessages = [
+        (r, amt) => `<strong>${r.name}</strong> waste <strong>${amt}</strong>/year on impulse buys. ${r.funFact}.`,
+        (r, amt) => `Average <strong>${r.name.toLowerCase()}</strong> blow <strong>${amt}</strong>/year on stuff they don't need. Ouch.`,
+        (r, amt) => `<strong>${amt}/year</strong> - that's what impulse buying costs the average ${r.name.toLowerCase().replace(/^the /, '')}. ${r.funFact}.`,
+        (r, amt) => `Fun fact: <strong>${r.name}</strong> spend <strong>${amt}</strong>/year on regrettable purchases. You're not alone.`
+      ];
+
+      async function loadLocalizedStat() {
+        try {
+          // Use free IP geolocation API (country-level only, no personal data stored)
+          const response = await fetch('https://ipapi.co/country/', { 
+            signal: AbortSignal.timeout(3000) 
+          });
+          if (!response.ok) throw new Error('Geo lookup failed');
+          const country = (await response.text()).trim().toUpperCase();
+          
+          const region = regionStats[country] || regionStats['DEFAULT'];
+          const mult = region.mult || 1;
+          const amount = region.currency + (region.avg * mult).toLocaleString();
+          
+          const message = wittyMessages[Math.floor(Math.random() * wittyMessages.length)](region, amount);
+          
+          const statEl = document.getElementById('hero-local-stat');
+          const textEl = document.getElementById('local-stat-text');
+          
+          if (statEl && textEl) {
+            textEl.innerHTML = message;
+            statEl.style.display = 'flex';
+          }
+        } catch (e) {
+          // Silent fail - stat just won't show (no tracking, privacy-first)
+          console.log('Hero stat: Using fallback (geo unavailable)');
+          const region = regionStats['DEFAULT'];
+          const amount = region.currency + region.avg.toLocaleString();
+          const message = wittyMessages[Math.floor(Math.random() * wittyMessages.length)](region, amount);
+          
+          const statEl = document.getElementById('hero-local-stat');
+          const textEl = document.getElementById('local-stat-text');
+          
+          if (statEl && textEl) {
+            textEl.innerHTML = message;
+            statEl.style.display = 'flex';
+          }
+        }
+      }
+
+      // Load on page ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadLocalizedStat);
+      } else {
+        loadLocalizedStat();
       }
     })();
   </script>

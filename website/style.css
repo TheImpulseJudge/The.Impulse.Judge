@@ -838,6 +838,47 @@ img {
   opacity: 0.8;
 }
 
+.hero-local-stat {
+  background: linear-gradient(135deg, rgba(233, 69, 96, 0.15), rgba(255, 107, 107, 0.1));
+  border: 1px solid rgba(233, 69, 96, 0.3);
+  border-radius: 12px;
+  padding: 14px 24px;
+  margin: 0 auto 28px;
+  max-width: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  animation: fadeInUp 0.5s ease-out, subtlePulse 3s ease-in-out infinite;
+  box-shadow: 0 4px 20px rgba(233, 69, 96, 0.15);
+}
+
+.hero-local-stat .local-stat-icon {
+  font-size: 20px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.hero-local-stat .local-stat-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.4;
+}
+
+.hero-local-stat .local-stat-text strong {
+  color: var(--color-primary-light);
+}
+
+@keyframes subtlePulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(233, 69, 96, 0.15); }
+  50% { box-shadow: 0 4px 30px rgba(233, 69, 96, 0.25); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
 .hero-buttons {
   display: flex;
   gap: 16px;
@@ -2771,6 +2812,110 @@ img {
   min-width: 160px;
 }
 
+/* Roulette Stakes Bar */
+.roulette-stakes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, rgba(233, 69, 96, 0.1), rgba(255, 107, 107, 0.05));
+  border: 1px solid rgba(233, 69, 96, 0.2);
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.roulette-stakes .stakes-icon {
+  font-size: 18px;
+}
+
+.roulette-stakes .stakes-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Roulette Typing Challenge */
+.roulette-challenge {
+  background: var(--color-bg);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.roulette-challenge .challenge-header {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.roulette-challenge .challenge-input {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 15px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.roulette-challenge .challenge-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
+}
+
+.roulette-challenge .challenge-input::placeholder {
+  color: var(--color-text-dim);
+}
+
+.roulette-challenge .challenge-result {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 20px;
+  transition: var(--transition);
+}
+
+.roulette-challenge .challenge-result:empty {
+  display: none;
+}
+
+.roulette-challenge .challenge-progress {
+  background: rgba(100, 149, 237, 0.1);
+  border: 1px solid rgba(100, 149, 237, 0.3);
+  color: #6495ed;
+}
+
+.roulette-challenge .challenge-success {
+  background: rgba(74, 222, 128, 0.15);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  color: var(--color-secondary);
+  animation: successPop 0.4s ease-out;
+}
+
+.roulette-challenge .challenge-error {
+  background: rgba(233, 69, 96, 0.1);
+  border: 1px solid rgba(233, 69, 96, 0.3);
+  color: var(--color-primary);
+}
+
+@keyframes successPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
 @media (max-width: 480px) {
   .roulette-actions {
     flex-direction: column;
@@ -4516,9 +4661,11 @@ img {
   padding: 6px 10px;
   font-size: 18px;
   cursor: pointer;
-  pointer-events: all;
+  pointer-events: auto;
   transition: all 0.2s;
   margin-top: 8px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .game-mute-btn:hover {
@@ -4528,6 +4675,17 @@ img {
 
 .game-mute-btn:active {
   transform: scale(0.95);
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* Mobile: larger touch target for mute buttons */
+@media (max-width: 600px) {
+  .game-mute-btn {
+    padding: 10px 14px;
+    font-size: 20px;
+    min-width: 44px;
+    min-height: 44px;
+  }
 }
 
 /* Infinite Floor */
@@ -4772,28 +4930,50 @@ img {
   }
   
   .dash-receipt-card {
-    padding: 15px 20px;
-    max-width: 240px;
-  }
-  
-  .dash-receipt-title {
-    font-size: 16px;
-  }
-  
-  .dash-btn {
     padding: 12px 16px;
-    font-size: 13px;
-    width: 90%;
     max-width: 200px;
   }
   
+  .dash-receipt-title {
+    font-size: 14px;
+  }
+  
+  .dash-receipt-text {
+    font-size: 11px;
+    margin: 5px 0;
+  }
+  
+  .dash-receipt-hint {
+    font-size: 10px;
+  }
+  
+  .dash-receipt-row {
+    font-size: 11px;
+  }
+  
   .dash-guilty {
-    font-size: 24px;
+    font-size: 22px;
+  }
+  
+  .dash-death-cause {
+    font-size: 10px;
+  }
+  
+  .dash-btn-group {
+    gap: 8px;
+    padding: 0 10px;
   }
   
   .dash-btn {
-    padding: 12px 20px;
-    font-size: 14px;
+    padding: 10px 16px;
+    font-size: 12px;
+    width: 100%;
+    max-width: 180px;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+  }
+  
+  .dash-overlay {
+    padding: 10px;
   }
 }
 
@@ -5102,12 +5282,26 @@ img {
   }
   
   .defense-shop-grid {
-    gap: 6px;
+    gap: 4px;
+    padding: 4px;
   }
   
   .defense-card {
-    width: 58px;
-    height: 65px;
+    width: 48px;
+    height: 54px;
+  }
+  
+  .defense-card-icon {
+    font-size: 18px;
+    margin-bottom: 1px;
+  }
+  
+  .defense-card-name {
+    font-size: 6px;
+  }
+  
+  .defense-card-cost {
+    font-size: 8px;
   }
   
   .defense-overlay-title {
@@ -5129,24 +5323,38 @@ img {
   }
   
   .defense-header {
-    padding: 0 8px;
+    padding: 0 6px;
   }
   
   .defense-stats-group {
-    gap: 8px;
+    gap: 6px;
+  }
+  
+  .defense-shop-grid {
+    gap: 3px;
+    padding: 3px;
   }
   
   .defense-card {
-    width: 52px;
-    height: 60px;
+    width: 42px;
+    height: 48px;
   }
   
   .defense-card-icon {
-    font-size: 18px;
+    font-size: 16px;
+    margin-bottom: 0;
   }
   
   .defense-card-name {
+    font-size: 5px;
+  }
+  
+  .defense-card-cost {
     font-size: 7px;
+  }
+  
+  .defense-card-key {
+    display: none;
   }
 }
 
@@ -5835,6 +6043,53 @@ img {
   max-width: 400px;
   margin: 16px auto 0;
   min-height: 40px;
+}
+
+/* Pet Rock Personality System */
+.rock-personality-badge {
+  display: inline-block;
+  background: rgba(233, 69, 96, 0.15);
+  border: 1px solid rgba(233, 69, 96, 0.3);
+  color: var(--color-primary-light);
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 10px;
+  vertical-align: middle;
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(233, 69, 96, 0); }
+  50% { box-shadow: 0 0 12px rgba(233, 69, 96, 0.4); }
+}
+
+.rock-milestone {
+  display: none;
+  background: linear-gradient(135deg, rgba(233, 69, 96, 0.2), rgba(255, 107, 107, 0.15));
+  border: 2px solid rgba(233, 69, 96, 0.5);
+  border-radius: 12px;
+  padding: 12px 20px;
+  margin-top: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+  animation: milestoneAppear 0.5s ease-out;
+}
+
+.rock-milestone.milestone-pop {
+  animation: milestoneAppear 0.5s ease-out, milestonePulse 0.6s ease-in-out infinite;
+}
+
+@keyframes milestoneAppear {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes milestonePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
 }
 
 /* ============================================
