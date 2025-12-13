@@ -4,6 +4,19 @@
   ],
   "headers": [
     {
+      "source": "/(.*)",
+      "headers": [
+        { 
+          "key": "Content-Security-Policy", 
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://*.vercel-scripts.com https://*.vercel-insights.com https://*.sibforms.com https://sibforms.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://ipapi.co https://*.sibforms.com https://sibforms.com https://*.vercel-insights.com; frame-src https://*.sibforms.com https://sibforms.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://*.sibforms.com https://sibforms.com;"
+        },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=(), payment=()" }
+      ]
+    },
+    {
       "source": "/screenshots/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }

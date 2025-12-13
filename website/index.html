@@ -1916,6 +1916,16 @@
   </div>
 
   <script>
+    // ============================================
+    // SECURITY: HTML SANITIZATION UTILITY
+    // ============================================
+    function sanitizeHTML(str) {
+      if (typeof str !== 'string') return '';
+      const tempDiv = document.createElement('div');
+      tempDiv.textContent = str;
+      return tempDiv.innerHTML;
+    }
+    
     // Mobile menu toggle
     const navToggle = document.querySelector('.nav-toggle');
     const mobileMenu = document.querySelector('.mobile-menu');
@@ -2944,10 +2954,76 @@ function updateTimeBasedContent() {
       setTimeout(() => btn.style.transform = 'rotate(0deg)', 300);
     }
 
+    // ============================================
+    // NEWSLETTER FORM VALIDATION
+    // ============================================
+    function setupNewsletterValidation() {
+      const heroForm = document.getElementById('hero-signup-form');
+      const heroEmail = document.getElementById('hero-signup-email');
+      const heroMsg = document.getElementById('hero-signup-msg');
+      const heroConsent = document.getElementById('hero-signup-consent');
+      
+      if (heroForm && heroEmail && heroMsg) {
+        heroForm.addEventListener('submit', function(e) {
+          // Reset styling
+          heroEmail.style.borderColor = '';
+          heroEmail.style.animation = '';
+          
+          // Validate email
+          if (!heroEmail.value.trim()) {
+            e.preventDefault();
+            heroEmail.style.borderColor = 'var(--color-primary)';
+            heroEmail.style.animation = 'shake 0.3s';
+            heroMsg.textContent = '❌ The Judge demands an email address. You can\'t just... not type anything.';
+            heroMsg.style.color = 'var(--color-primary)';
+            heroEmail.focus();
+            return false;
+          }
+          
+          if (!heroEmail.validity.valid) {
+            e.preventDefault();
+            heroEmail.style.borderColor = 'var(--color-primary)';
+            heroEmail.style.animation = 'shake 0.3s';
+            heroMsg.textContent = '❌ That email looks fake. The Judge demands a real one. No typos, no games.';
+            heroMsg.style.color = 'var(--color-primary)';
+            heroEmail.focus();
+            return false;
+          }
+          
+          // Validate consent checkbox
+          if (!heroConsent.checked) {
+            e.preventDefault();
+            heroMsg.textContent = '❌ You must agree to receive emails. We\'re not spammers, but we need consent.';
+            heroMsg.style.color = 'var(--color-primary)';
+            heroConsent.parentElement.style.animation = 'shake 0.3s';
+            setTimeout(() => {
+              heroConsent.parentElement.style.animation = '';
+            }, 300);
+            return false;
+          }
+          
+          // Show loading state
+          heroMsg.textContent = '⏳ Submitting to The Judge...';
+          heroMsg.style.color = '#666';
+          
+          // Form will submit naturally to Brevo
+        });
+        
+        // Clear error styling on input
+        heroEmail.addEventListener('input', function() {
+          this.style.borderColor = '';
+          this.style.animation = '';
+          heroMsg.textContent = 'We email so rarely, you\'ll forget you subscribed.';
+          heroMsg.style.color = '#666';
+        });
+      }
+    }
+
     // Run on page load
     document.addEventListener('DOMContentLoaded', function() {
       updateTimeBasedContent();
       updateCalculator();
+      setupNewsletterValidation();
       // Randomize initial coffee pitch
       currentCoffeePitch = Math.floor(Math.random() * coffeePitches.length);
       document.getElementById('coffee-pitch').textContent = coffeePitches[currentCoffeePitch];
@@ -4040,6 +4116,23 @@ function updateTimeBasedContent() {
     
     let dashRng = Math.random;
     
+    // Challenge Mode - Parse URL parameter
+    let dashChallengeScore = null;
+    (function() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const challengeParam = urlParams.get('challenge');
+        if (challengeParam) {
+          const score = parseInt(challengeParam);
+          if (!isNaN(score) && score > 0 && score < 10000000) {
+            dashChallengeScore = score;
+          }
+        }
+      } catch(e) {
+        // URL parsing failed, ignore challenge mode
+      }
+    })();
+    
     // Audio context (lazy init for mobile)
     let dashAudioCtx = null;
     let dashAudioMuted = false;
@@ -4236,6 +4329,18 @@ function updateTimeBasedContent() {
       // Reset RNG
       dashRng = Math.random;
       
+      // Show challenge banner if in challenge mode
+      const existingBanner = document.getElementById('dash-challenge-banner');
+      if (existingBanner) existingBanner.remove();
+      
+      if (dashChallengeScore !== null && dashElements.wrapper) {
+        const banner = document.createElement('div');
+        banner.id = 'dash-challenge-banner';
+        banner.style.cssText = 'position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(233, 69, 96, 0.2); border: 2px solid var(--color-primary); padding: 8px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; z-index: 1000; animation: pulse 2s infinite; white-space: nowrap;';
+        banner.textContent = '\ud83c\udfc6 CHALLENGE: Beat $' + dashChallengeScore.toLocaleString();
+        dashElements.wrapper.appendChild(banner);
+      }
+      
       // Update UI
       if (dashElements.score) dashElements.score.innerText = "0";
       if (dashElements.combo) dashElements.combo.style.opacity = "0";
@@ -4367,6 +4472,10 @@ function updateTimeBasedContent() {
       dashState.lastObstacle = cause;
       dashSfx('crash');
       
+      // Remove challenge banner
+      const banner = document.getElementById('dash-challenge-banner');
+      if (banner) banner.remove();
+      
       if (dashElements.deathCause) dashElements.deathCause.innerText = cause.name;
       if (dashElements.finalScore) dashElements.finalScore.innerText = "$" + dashState.score;
       if (dashElements.actionBtn) dashElements.actionBtn.innerText = "APPEAL (RETRY)";
@@ -4382,6 +4491,32 @@ function updateTimeBasedContent() {
         dashHighScore = dashState.score;
         localStorage.setItem('impulse_dash_high', dashHighScore);
         if (dashElements.highScore) dashElements.highScore.innerText = dashHighScore;
+      }
+      
+      // Show challenge result if in challenge mode
+      const existingResult = document.getElementById('dash-challenge-result');
+      if (existingResult) existingResult.remove();
+      
+      if (dashChallengeScore !== null && dashElements.gameOverContent) {
+        const resultDiv = document.createElement('div');
+        resultDiv.id = 'dash-challenge-result';
+        resultDiv.style.cssText = 'margin-top: 20px; padding: 16px; border-radius: 8px; font-weight: 600; font-size: 16px; line-height: 1.5;';
+        
+        if (dashState.score >= dashChallengeScore) {
+          resultDiv.style.background = 'rgba(46, 204, 113, 0.2)';
+          resultDiv.style.border = '2px solid var(--color-secondary)';
+          resultDiv.style.color = 'var(--color-secondary)';
+          resultDiv.innerHTML = '🏆 <strong>CHALLENGE WON!</strong><br><span style="font-weight: 400;">You beat $' + dashChallengeScore.toLocaleString() + '!</span>';
+          launchConfetti();
+        } else {
+          resultDiv.style.background = 'rgba(233, 69, 96, 0.15)';
+          resultDiv.style.border = '2px solid var(--color-primary)';
+          resultDiv.style.color = 'var(--color-primary)';
+          const deficit = dashChallengeScore - dashState.score;
+          resultDiv.innerHTML = '❌ <strong>CHALLENGE FAILED</strong><br><span style="font-weight: 400;">Needed $' + deficit.toLocaleString() + ' more. Retry!</span>';
+        }
+        
+        dashElements.gameOverContent.appendChild(resultDiv);
       }
     }
     
@@ -4404,20 +4539,26 @@ BEST: $${dashHighScore}
 VERDICT: GUILTY
 Can you save more?`;
 
-      const url = 'https://theimpulsejudge.com';
+      const challengeURL = 'https://theimpulsejudge.com?challenge=' + score;
+      const baseURL = 'https://theimpulsejudge.com';
       
       const shareData = {
-        title: 'Impulse Judge Receipt',
-        text: `I saved $${score} in Dopamine Dash (Tripped on: ${cause}). Beat me:`,
-        url: url
+        title: 'Beat My Score - Impulse Judge',
+        text: `I saved $${score} in Dopamine Dash! Can you beat me?`,
+        url: challengeURL
       };
       
       if (navigator.share) {
         try { 
           await navigator.share(shareData); 
-        } catch(err) {}
+        } catch(err) {
+          // Fallback to clipboard if share fails
+          navigator.clipboard.writeText(`I saved $${score} in Dopamine Dash! Beat me: ${challengeURL}`);
+          dashShowToast();
+        }
       } else {
-        navigator.clipboard.writeText(receiptText + "\n" + url);
+        // Desktop fallback: copy challenge URL to clipboard
+        navigator.clipboard.writeText(`I saved $${score} in Dopamine Dash! Beat me: ${challengeURL}`);
         dashShowToast();
       }
     }
