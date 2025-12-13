@@ -2989,7 +2989,7 @@ function updateTimeBasedContent() {
     })();
 
     // ============================================
-    // GOOGLY EYES - Desktop: track mouse, Mobile: wander curiously
+    // GOOGLY EYES - Desktop: track mouse, Mobile: wander gently
     // ============================================
     (function initGooglyEyes() {
       const eyesContainer = document.getElementById('eyes-container');
@@ -2998,38 +2998,8 @@ function updateTimeBasedContent() {
                        navigator.maxTouchPoints > 0;
       
       if (isMobile && eyesContainer) {
-        // Mobile: Add wandering class for CSS animation
+        // Mobile: Add wandering class for gentle CSS animation
         eyesContainer.classList.add('mobile-wander');
-        
-        // Also add occasional "look at something" behavior
-        let wanderTimeout;
-        const addRandomLook = () => {
-          const eyes = document.querySelectorAll('.eye');
-          eyes.forEach(eye => {
-            if (eye.dataset.poked === 'true') return;
-            const pupil = eye.querySelector('.pupil');
-            
-            // Occasionally override animation with a focused look
-            if (Math.random() < 0.3) {
-              const randomX = (Math.random() - 0.5) * 8;
-              const randomY = (Math.random() - 0.5) * 6;
-              pupil.style.animation = 'none';
-              pupil.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
-              
-              // Return to wandering after a moment
-              setTimeout(() => {
-                pupil.style.animation = '';
-                pupil.style.transform = '';
-              }, 800 + Math.random() * 400);
-            }
-          });
-          
-          // Schedule next random look
-          wanderTimeout = setTimeout(addRandomLook, 3000 + Math.random() * 4000);
-        };
-        
-        // Start random looks after initial delay
-        setTimeout(addRandomLook, 2000);
       } else {
         // Desktop: Track mouse movement
         document.addEventListener('mousemove', (e) => {

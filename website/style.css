@@ -4315,60 +4315,34 @@ img {
     height: 8px;
   }
   
-  /* Mobile wandering animation for pupils */
+  /* Mobile wandering animation for pupils - gentle, synchronized */
   .eyes-container.mobile-wander .pupil {
-    animation: pupilWander 4s ease-in-out infinite;
-  }
-  
-  .eyes-container.mobile-wander #eye-left .pupil {
-    animation-delay: 0s;
-  }
-  
-  .eyes-container.mobile-wander #eye-right .pupil {
-    animation-delay: 0.15s;
+    animation: pupilWander 8s ease-in-out infinite;
   }
 }
 
-/* Wandering animation keyframes - makes eyes look curious and alive */
+/* Wandering animation - subtle, natural eye movement */
 @keyframes pupilWander {
   0%, 100% { 
-    transform: translate(calc(-50% + 0px), calc(-50% + 0px)); 
+    transform: translate(-50%, -50%); 
   }
-  8% { 
-    transform: translate(calc(-50% + 3px), calc(-50% - 1px)); 
+  15% { 
+    transform: translate(calc(-50% + 2px), calc(-50% - 1px)); 
   }
-  16% { 
-    transform: translate(calc(-50% + 3px), calc(-50% - 1px)); 
+  30% { 
+    transform: translate(calc(-50% + 2px), calc(-50% - 1px)); 
   }
-  24% { 
-    transform: translate(calc(-50% - 2px), calc(-50% + 2px)); 
+  45% { 
+    transform: translate(calc(-50% - 1px), calc(-50% + 1px)); 
   }
-  32% { 
-    transform: translate(calc(-50% - 2px), calc(-50% + 2px)); 
+  60% { 
+    transform: translate(calc(-50% - 1px), calc(-50% + 1px)); 
   }
-  40% { 
-    transform: translate(calc(-50% + 0px), calc(-50% - 3px)); 
+  75% { 
+    transform: translate(calc(-50% + 1px), calc(-50% + 0px)); 
   }
-  48% { 
-    transform: translate(calc(-50% + 0px), calc(-50% - 3px)); 
-  }
-  56% { 
-    transform: translate(calc(-50% + 4px), calc(-50% + 1px)); 
-  }
-  64% { 
-    transform: translate(calc(-50% + 4px), calc(-50% + 1px)); 
-  }
-  72% { 
-    transform: translate(calc(-50% - 3px), calc(-50% - 2px)); 
-  }
-  80% { 
-    transform: translate(calc(-50% - 3px), calc(-50% - 2px)); 
-  }
-  88% { 
-    transform: translate(calc(-50% + 1px), calc(-50% + 3px)); 
-  }
-  96% { 
-    transform: translate(calc(-50% + 1px), calc(-50% + 3px)); 
+  90% { 
+    transform: translate(calc(-50% + 1px), calc(-50% + 0px)); 
   }
 }
 
