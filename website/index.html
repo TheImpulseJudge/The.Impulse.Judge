@@ -4148,6 +4148,16 @@ function updateTimeBasedContent() {
     function dashHandleInput(e) {
       if (e.type === 'keydown' && e.code !== 'Space' && e.code !== 'ArrowUp') return;
       
+      // CRITICAL: Don't intercept button clicks/touches - let them work normally
+      if (e.target.closest('.game-mute-btn') || 
+          e.target.closest('.dash-btn') || 
+          e.target.closest('.dash-btn-group') ||
+          e.target.id === 'dash-mute-btn' ||
+          e.target.id === 'dash-share-btn' ||
+          e.target.id === 'dash-action-btn') {
+        return; // Let the button handle its own click
+      }
+      
       // Prevent page scroll for Space/Arrow keys when Dash tab is visible
       if (e.type === 'keydown' && (e.code === 'Space' || e.code === 'ArrowUp')) {
         const dashTab = document.getElementById('therapy-dash');

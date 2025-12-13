@@ -826,14 +826,14 @@ img {
   font-size: 18px;
   color: var(--color-text-muted);
   max-width: 600px;
-  margin: 0 auto 16px;
+  margin: 0 auto 12px;
   line-height: 1.7;
 }
 
 .hero-origin {
   font-size: 14px;
   color: var(--color-text-dim);
-  margin: 0 auto 32px;
+  margin: 0 auto 24px;
   font-style: italic;
   opacity: 0.8;
 }
@@ -843,7 +843,7 @@ img {
   border: 1px solid rgba(233, 69, 96, 0.3);
   border-radius: 12px;
   padding: 14px 24px;
-  margin: 0 auto 28px;
+  margin: 0 auto 20px;
   max-width: 520px;
   display: flex;
   align-items: center;
@@ -3322,6 +3322,16 @@ img {
   
   .hero-description {
     font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .hero-origin {
+    margin-bottom: 16px;
+  }
+  
+  .hero-local-stat {
+    margin-bottom: 16px;
+    padding: 12px 18px;
   }
   
   .hero-buttons {
@@ -4605,7 +4615,7 @@ img {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   user-select: none;
   -webkit-user-select: none;
-  touch-action: none;
+  /* REMOVED touch-action: none - it was blocking ALL touch events including buttons */
   font-family: 'Courier New', Courier, monospace;
 }
 
@@ -4710,6 +4720,7 @@ img {
     #fff 20px
   );
   border-top: 2px dashed #999;
+  touch-action: none;
 }
 
 /* The Judge Player */
@@ -4725,6 +4736,7 @@ img {
   justify-content: center;
   z-index: 5;
   transform-origin: center;
+  touch-action: none;
 }
 
 .dash-player.spin {
@@ -5295,6 +5307,13 @@ img {
   font-size: 13px;
   color: var(--color-text-muted);
   margin-top: 16px;
+}
+
+/* Hide keyboard instructions on mobile/tablet - they don't have keyboards */
+@media (max-width: 1024px) {
+  .defense-tip {
+    display: none;
+  }
 }
 
 /* Mobile adjustments for Credit Defense */
