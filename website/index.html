@@ -950,7 +950,7 @@
           <div class="runaway-mobile-notice">
             <span class="mobile-notice-emoji">🖱️</span>
             <p class="mobile-notice-title">This game requires a mouse to play.</p>
-            <p class="mobile-notice-text">The button literally runs away from your cursor. Visit on desktop to experience the frustration—your touchscreen fingers can't help you here.</p>
+            <p class="mobile-notice-text">The button literally runs away from your cursor. Visit on desktop to experience the frustration - your touchscreen fingers can't help you here.</p>
           </div>
           <div class="runaway-arena runaway-desktop-only" id="runaway-arena">
             <button id="runaway-btn" class="runaway-btn">🔥 Buy Now</button>
@@ -1031,7 +1031,7 @@
         <!-- Tab 12: Judge The Hype  -->
         <div id="therapy-hype" class="therapy-content">
           <h3 class="therapy-subtitle">Judge The Hype</h3>
-          <p class="therapy-desc">Swipe left on trash. Swipe right on needs. The timer is running—hesitation is expensive.</p>
+          <p class="therapy-desc">Swipe left on trash. Swipe right on needs. The timer is running - hesitation is expensive.</p>
           <div class="hype-wrapper">
             <div class="hype-game-layout" id="hype-game-layout">
               <!-- Panic Fuse Timer -->
@@ -4528,6 +4528,7 @@ Can you save more?`;
       initialized: false,
       waveCountdown: 0,
       countdownInterval: null,
+      isMobile: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
 
       init() {
         if (!this.canvas) {
@@ -5083,29 +5084,35 @@ Can you save more?`;
         ctx.lineWidth = 40; ctx.strokeStyle = '#111'; ctx.stroke();
         ctx.lineWidth = 2; ctx.strokeStyle = '#222'; ctx.setLineDash([10, 10]); ctx.stroke(); ctx.setLineDash([]);
 
-        // Towers
+        // Towers - smaller on mobile for more placement flexibility
+        const towerRadius = this.isMobile ? 14 : 22;
+        const towerFontSize = this.isMobile ? '16px Arial' : '24px Arial';
         this.towers.forEach(t => {
           if (this.selectedTower === t) {
             ctx.beginPath(); ctx.arc(t.x, t.y, t.type.range, 0, Math.PI * 2);
             ctx.fillStyle = 'rgba(255,255,255,0.1)'; ctx.fill();
             ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 1; ctx.stroke();
           }
-          ctx.beginPath(); ctx.arc(t.x, t.y, 22, 0, Math.PI * 2);
+          ctx.beginPath(); ctx.arc(t.x, t.y, towerRadius, 0, Math.PI * 2);
           ctx.fillStyle = '#222'; ctx.fill();
-          ctx.strokeStyle = t.type.color; ctx.lineWidth = 3; ctx.stroke();
-          ctx.font = '24px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillStyle = '#fff'; ctx.fillText(t.type.emoji, t.x, t.y + 2);
+          ctx.strokeStyle = t.type.color; ctx.lineWidth = this.isMobile ? 2 : 3; ctx.stroke();
+          ctx.font = towerFontSize; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillStyle = '#fff'; ctx.fillText(t.type.emoji, t.x, t.y + 1);
         });
 
-        // Enemies
+        // Enemies - smaller on mobile
+        const enemyFontSize = this.isMobile ? '18px Arial' : '24px Arial';
+        const enemyFlashRadius = this.isMobile ? 10 : 15;
+        const hpBarWidth = this.isMobile ? 20 : 30;
+        const hpBarOffset = this.isMobile ? 20 : 28;
         this.enemies.forEach(e => {
           const pct = e.hp / e.maxHp;
-          ctx.fillStyle = '#333'; ctx.fillRect(e.x - 15, e.y - 28, 30, 4);
+          ctx.fillStyle = '#333'; ctx.fillRect(e.x - hpBarWidth/2, e.y - hpBarOffset, hpBarWidth, 4);
           ctx.fillStyle = e.frozen > 0 ? '#007aff' : '#ff3b30';
-          ctx.fillRect(e.x - 15, e.y - 28, Math.max(0, 30 * pct), 4);
-          ctx.font = '24px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillRect(e.x - hpBarWidth/2, e.y - hpBarOffset, Math.max(0, hpBarWidth * pct), 4);
+          ctx.font = enemyFontSize; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           if (e.flash > 0) {
-            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(e.x, e.y, 15, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(e.x, e.y, enemyFlashRadius, 0, Math.PI * 2); ctx.fill();
           } else {
             ctx.fillStyle = '#000'; ctx.fillText(e.type.emoji, e.x, e.y + 2);
             ctx.fillStyle = '#fff'; ctx.fillText(e.type.emoji, e.x, e.y);
@@ -5129,14 +5136,15 @@ Can you save more?`;
         });
         ctx.globalAlpha = 1;
 
-        // Ghost placement
+        // Ghost placement - smaller on mobile
         if (this.selectedShopIdx !== -1) {
           const t = DEFENSE_TOWERS[this.selectedShopIdx];
           const valid = this.isValidPlacement(this.pointerX, this.pointerY);
           const color = valid ? 'rgba(46, 204, 113, 0.3)' : 'rgba(231, 76, 60, 0.3)';
           ctx.beginPath(); ctx.arc(this.pointerX, this.pointerY, t.range, 0, Math.PI * 2);
           ctx.fillStyle = color; ctx.fill();
-          ctx.globalAlpha = 0.7; ctx.font = '24px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          const ghostFontSize = this.isMobile ? '16px Arial' : '24px Arial';
+          ctx.globalAlpha = 0.7; ctx.font = ghostFontSize; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText(t.emoji, this.pointerX, this.pointerY); ctx.globalAlpha = 1;
         }
 
