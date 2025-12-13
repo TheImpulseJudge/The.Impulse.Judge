@@ -34,7 +34,16 @@ It's not a blocker. It's a **speed bump for your credit card with a law degree**
 
 ---
 
-[Visit the Official Website](https://theimpulsejudge.com) for the full roast tour.
+[Visit the Official Website](https://theimpulsejudge.com) | [Join the Discord](https://discord.gg/qmAsM5de6Q)
+
+### 🏛️ The Courtroom (Discord)
+
+Our Discord server is a public forum where you can:
+- **#the-roast-block** - Confess your worst impulse purchases for a chance to get roasted by the Judge
+- **#suggestions-box** - Submit feature ideas (we actually read these)
+- **#judge-speak** - Official announcements from The Judge
+
+**Fair warning:** It's a public server. Everything you post is visible to all members. Read the channel rules before confessing your 3 AM purchases.
 
 ### 🌐 Website-only chaos
 - **Free Therapy mini games**

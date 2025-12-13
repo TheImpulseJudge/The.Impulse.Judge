@@ -284,6 +284,20 @@
             <span class="stat-label">FREE Forever</span>
           </div>
         </div>
+        
+        <!-- Discord Invite Card -->
+        <a href="https://discord.gg/qmAsM5de6Q" target="_blank" rel="noopener" class="hero-discord-invite">
+          <div class="hero-discord-content">
+            <img src="/icons/Discord-Symbol-Blurple.png" alt="Discord" class="hero-discord-logo">
+            <div class="hero-discord-text">
+              <span class="hero-discord-title">Enter The Courtroom</span>
+              <span class="hero-discord-subtitle">Public roast confessions • Feature suggestions • Judge's decrees</span>
+            </div>
+            <span class="hero-discord-arrow">→</span>
+          </div>
+          <span class="hero-discord-fine-print">Public Discord server - read the channel rules before posting</span>
+        </a>
+        
         <div class="hero-therapy-link">
           <span>🙅 Browser extensions not your thing?</span>
           <div class="hero-therapy-actions">
@@ -1587,6 +1601,11 @@
           <h3>Bugs & Ideas</h3>
           <p>Something broke? Got a brilliant idea? Either way, we're listening. Help us make The Impulse Judge<sup class="tm">™</sup> even more judgmental.</p>
         </a>
+        <a href="https://discord.gg/qmAsM5de6Q" target="_blank" rel="noopener" class="feedback-card feedback-card-discord">
+          <img src="/icons/Discord-Symbol-Blurple.png" alt="Discord" class="feedback-discord-logo">
+          <h3>Join The Courtroom</h3>
+          <p>Confess your purchases publicly, suggest features, and get judged by fellow impulsive shoppers. Public Discord server, enter at your own risk.</p>
+        </a>
       </div>
     </div>
   </section>
@@ -1753,7 +1772,7 @@
             </label>
           </div>
           <div class="certificate-privacy">
-            <p>🔒 Your data stays in your browser. We don't store, track, or share anything. Ever.</p>
+            <p>🔒 All data entered in this certificate generator stays in your browser. We don't store, track or share any of it.</p>
           </div>
           <button class="btn btn-primary btn-lg certificate-btn" onclick="generateCertificate()">
             🎓 Generate My Financial Sobriety Certificate
@@ -3054,8 +3073,7 @@ function updateTimeBasedContent() {
       const headlineOptions = [
         "Your Inbox Needs a Financial Intervention",
         "The Only Email List That Actually Saves You Money",
-        "Join the Anti-Impulse Club",
-        "Weekly Roasts, Zero Regrets"
+        "Join the Anti-Impulse Club"
       ];
       
       const randomHeadline = headlineOptions[Math.floor(Math.random() * headlineOptions.length)];
