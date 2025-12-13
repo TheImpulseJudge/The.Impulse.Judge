@@ -4298,10 +4298,77 @@ img {
   pointer-events: none;
 }
 
-/* Hide eyes on tablet and mobile */
+/* Mobile eyes - visible but smaller */
 @media (max-width: 768px) {
   .eyes-container {
-    display: none;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  
+  .eye {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .pupil {
+    width: 8px;
+    height: 8px;
+  }
+  
+  /* Mobile wandering animation for pupils */
+  .eyes-container.mobile-wander .pupil {
+    animation: pupilWander 4s ease-in-out infinite;
+  }
+  
+  .eyes-container.mobile-wander #eye-left .pupil {
+    animation-delay: 0s;
+  }
+  
+  .eyes-container.mobile-wander #eye-right .pupil {
+    animation-delay: 0.15s;
+  }
+}
+
+/* Wandering animation keyframes - makes eyes look curious and alive */
+@keyframes pupilWander {
+  0%, 100% { 
+    transform: translate(calc(-50% + 0px), calc(-50% + 0px)); 
+  }
+  8% { 
+    transform: translate(calc(-50% + 3px), calc(-50% - 1px)); 
+  }
+  16% { 
+    transform: translate(calc(-50% + 3px), calc(-50% - 1px)); 
+  }
+  24% { 
+    transform: translate(calc(-50% - 2px), calc(-50% + 2px)); 
+  }
+  32% { 
+    transform: translate(calc(-50% - 2px), calc(-50% + 2px)); 
+  }
+  40% { 
+    transform: translate(calc(-50% + 0px), calc(-50% - 3px)); 
+  }
+  48% { 
+    transform: translate(calc(-50% + 0px), calc(-50% - 3px)); 
+  }
+  56% { 
+    transform: translate(calc(-50% + 4px), calc(-50% + 1px)); 
+  }
+  64% { 
+    transform: translate(calc(-50% + 4px), calc(-50% + 1px)); 
+  }
+  72% { 
+    transform: translate(calc(-50% - 3px), calc(-50% - 2px)); 
+  }
+  80% { 
+    transform: translate(calc(-50% - 3px), calc(-50% - 2px)); 
+  }
+  88% { 
+    transform: translate(calc(-50% + 1px), calc(-50% + 3px)); 
+  }
+  96% { 
+    transform: translate(calc(-50% + 1px), calc(-50% + 3px)); 
   }
 }
 

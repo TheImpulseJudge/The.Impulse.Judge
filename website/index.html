@@ -2988,27 +2988,72 @@ function updateTimeBasedContent() {
       if (titleEl) titleEl.textContent = randomHeadline;
     })();
 
-    // Following Eyes Logic
-    document.addEventListener('mousemove', (e) => {
-      const eyes = document.querySelectorAll('.eye');
+    // ============================================
+    // GOOGLY EYES - Desktop: track mouse, Mobile: wander curiously
+    // ============================================
+    (function initGooglyEyes() {
+      const eyesContainer = document.getElementById('eyes-container');
+      const isMobile = window.matchMedia('(max-width: 768px)').matches || 
+                       'ontouchstart' in window || 
+                       navigator.maxTouchPoints > 0;
       
-      eyes.forEach(eye => {
-        if (eye.dataset.poked === 'true') return;
+      if (isMobile && eyesContainer) {
+        // Mobile: Add wandering class for CSS animation
+        eyesContainer.classList.add('mobile-wander');
         
-        const rect = eye.getBoundingClientRect();
-        const eyeX = rect.left + rect.width / 2;
-        const eyeY = rect.top + rect.height / 2;
+        // Also add occasional "look at something" behavior
+        let wanderTimeout;
+        const addRandomLook = () => {
+          const eyes = document.querySelectorAll('.eye');
+          eyes.forEach(eye => {
+            if (eye.dataset.poked === 'true') return;
+            const pupil = eye.querySelector('.pupil');
+            
+            // Occasionally override animation with a focused look
+            if (Math.random() < 0.3) {
+              const randomX = (Math.random() - 0.5) * 8;
+              const randomY = (Math.random() - 0.5) * 6;
+              pupil.style.animation = 'none';
+              pupil.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
+              
+              // Return to wandering after a moment
+              setTimeout(() => {
+                pupil.style.animation = '';
+                pupil.style.transform = '';
+              }, 800 + Math.random() * 400);
+            }
+          });
+          
+          // Schedule next random look
+          wanderTimeout = setTimeout(addRandomLook, 3000 + Math.random() * 4000);
+        };
+        
+        // Start random looks after initial delay
+        setTimeout(addRandomLook, 2000);
+      } else {
+        // Desktop: Track mouse movement
+        document.addEventListener('mousemove', (e) => {
+          const eyes = document.querySelectorAll('.eye');
+          
+          eyes.forEach(eye => {
+            if (eye.dataset.poked === 'true') return;
+            
+            const rect = eye.getBoundingClientRect();
+            const eyeX = rect.left + rect.width / 2;
+            const eyeY = rect.top + rect.height / 2;
 
-        const angle = Math.atan2(e.clientY - eyeY, e.clientX - eyeX);
-        const distance = 4;
+            const angle = Math.atan2(e.clientY - eyeY, e.clientX - eyeX);
+            const distance = 4;
 
-        const pupil = eye.querySelector('.pupil');
-        const pupX = Math.cos(angle) * distance;
-        const pupY = Math.sin(angle) * distance;
+            const pupil = eye.querySelector('.pupil');
+            const pupX = Math.cos(angle) * distance;
+            const pupY = Math.sin(angle) * distance;
 
-        pupil.style.transform = `translate(calc(-50% + ${pupX}px), calc(-50% + ${pupY}px))`;
-      });
-    });
+            pupil.style.transform = `translate(calc(-50% + ${pupX}px), calc(-50% + ${pupY}px))`;
+          });
+        });
+      }
+    })();
 
     // ============================================
     // EYE POKING EASTER EGG
