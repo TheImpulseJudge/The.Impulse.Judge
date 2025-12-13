@@ -2430,6 +2430,18 @@ img {
   color: var(--color-text-dim);
 }
 
+/* Remove spinner arrows from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 /* The Verdict Card - Shareable */
 .verdict-card {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -6564,7 +6576,7 @@ img {
 }
 
 .cert-form-badge {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--color-primary);
 }
