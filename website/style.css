@@ -3794,29 +3794,6 @@ textarea:focus-visible {
   align-items: center;
   text-align: center;
   position: relative;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 12px;
-  border-left: 4px solid rgba(255, 71, 87, 0.3);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hero-therapy-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-left-color: rgba(255, 71, 87, 0.8);
-  box-shadow: 0 4px 20px rgba(255, 71, 87, 0.15),
-              0 0 0 1px rgba(255, 71, 87, 0.1);
-  transform: translateX(2px);
-}
-
-.hero-therapy-featured {
-  border-left-color: rgba(255, 71, 87, 0.6);
-}
-
-.hero-therapy-featured:hover {
-  border-left-color: #ff4757;
-  box-shadow: 0 6px 24px rgba(255, 71, 87, 0.25),
-              0 0 0 1px rgba(255, 71, 87, 0.2);
 }
 
 .btn-therapy {
@@ -3827,54 +3804,27 @@ textarea:focus-visible {
   font-size: 14px;
   font-weight: 600;
   color: white;
-  background: #ff4757;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(233, 69, 96, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(255, 71, 87, 0.2);
+  box-shadow: 0 2px 8px rgba(233, 69, 96, 0.2);
   width: 100%;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-therapy::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transition: left 0.5s ease;
-}
-
-.btn-therapy:hover::before {
-  left: 100%;
 }
 
 .btn-therapy:hover {
-  background: #e63946;
+  background: rgba(233, 69, 96, 1);
   border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   color: white;
-  box-shadow: 0 4px 16px rgba(255, 71, 87, 0.35),
-              0 2px 8px rgba(255, 71, 87, 0.2);
+  box-shadow: 0 4px 14px rgba(233, 69, 96, 0.3);
 }
 
 .btn-therapy:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(255, 71, 87, 0.25);
-}
-
-.hero-therapy-item:hover .btn-therapy {
-  animation: iconBounce 0.6s ease;
-}
-
-@keyframes iconBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
+  box-shadow: 0 2px 8px rgba(233, 69, 96, 0.25);
 }
 
 .hero-therapy-badge {
