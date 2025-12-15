@@ -248,7 +248,7 @@
             <img src="icons/edge.png" alt="Edge" width="20" height="20" class="btn-icon" loading="lazy" decoding="async">
             <span>Add to Edge</span>
           </a>
-          <a href="#install" class="btn btn-primary btn-lg btn-judge btn-disabled" style="opacity: 0.6; cursor: not-allowed;" onclick="alert('Chrome Web Store submission pending review. Check back soon!'); return false;">
+          <a href="#install" class="btn btn-primary btn-lg btn-judge btn-disabled btn-chrome-pending" style="opacity: 0.6; cursor: not-allowed;">
             <img src="icons/chrome.png" alt="Chrome" width="20" height="20" class="btn-icon" loading="lazy" decoding="async">
             <span>Add to Chrome (Coming Soon)</span>
           </a>
@@ -494,7 +494,7 @@
                 </label>
                 <label class="entry__error entry__error--primary newsletter-field-error"></label>
               </div>
-              <input type="text" name="email_address_check" value="" class="input--hidden" style="display:none;">
+              <input type="text" name="email_address_check" value="" class="input--hidden" style="display:none;" tabindex="-1" aria-hidden="true" autocomplete="off">
               <input type="hidden" name="locale" value="en">
               <input type="hidden" name="_formRendered" id="formRenderedAt" value="">
             </form>
@@ -1426,7 +1426,7 @@
           </div>
         </div>
         <div class="cta-buttons">
-          <a href="#chrome-coming-soon" class="btn btn-primary btn-xl btn-store btn-disabled" onclick="alert('Chrome Web Store submission pending review. Check back soon!'); return false;">
+          <a href="#chrome-coming-soon" class="btn btn-primary btn-xl btn-store btn-disabled btn-chrome-pending">
             <img src="icons/chrome.png" alt="Chrome" class="browser-logo" width="24" height="24" loading="lazy" decoding="async">
             <span>Chrome (Coming Soon)</span>
           </a>
@@ -1933,7 +1933,7 @@
         <img src="icons/edge.png" alt="Edge" width="16" height="16" class="btn-icon" loading="lazy" decoding="async">
         Add to Edge
       </a>
-      <a href="#install" class="btn btn-primary btn-md sticky-install-btn btn-judge btn-disabled" style="opacity: 0.6; cursor: not-allowed;" onclick="alert('Chrome Web Store submission pending review. Check back soon!'); return false;">
+      <a href="#install" class="btn btn-primary btn-md sticky-install-btn btn-judge btn-disabled btn-chrome-pending" style="opacity: 0.6; cursor: not-allowed;">
         <img src="icons/chrome.png" alt="Chrome" width="16" height="16" class="btn-icon" loading="lazy" decoding="async">
         Add to Chrome (Coming Soon)
       </a>
@@ -1950,6 +1950,59 @@
       tempDiv.textContent = str;
       return tempDiv.innerHTML;
     }
+    
+    // ============================================
+    // GLOBAL TOAST NOTIFICATION (CSP-COMPLIANT)
+    // ============================================
+    function showGlobalToast(message, duration = 2500) {
+      // Remove existing toast if any
+      const existing = document.getElementById('global-toast');
+      if (existing) existing.remove();
+      
+      const toast = document.createElement('div');
+      toast.id = 'global-toast';
+      toast.textContent = message;
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--color-surface-elevated, #2a2a3e);
+        color: var(--color-text, #fff);
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        z-index: 10000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border: 1px solid var(--color-border, rgba(255,255,255,0.1));
+      `;
+      document.body.appendChild(toast);
+      
+      // Trigger animation
+      requestAnimationFrame(() => {
+        toast.style.opacity = '1';
+      });
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, duration);
+    }
+    
+    // ============================================
+    // CHROME PENDING BUTTONS (CSP-COMPLIANT)
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.btn-chrome-pending').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          showGlobalToast('⏳ Chrome Web Store submission pending review. Check back soon!', 3500);
+        });
+      });
+    });
     
     // Mobile menu toggle
     const navToggle = document.querySelector('.nav-toggle');
@@ -2362,7 +2415,7 @@
         navigator.share({ text });
       } else {
         navigator.clipboard.writeText(text);
-        alert('Copied to clipboard!');
+        showGlobalToast('✅ Copied to clipboard!');
       }
     }
 
@@ -2825,7 +2878,7 @@
         navigator.share({ text });
       } else {
         navigator.clipboard.writeText(text);
-        alert('Copied to clipboard!');
+        showGlobalToast('✅ Copied to clipboard!');
       }
     }
 

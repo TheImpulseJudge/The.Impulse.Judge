@@ -3827,28 +3827,7 @@ textarea:focus-visible {
   box-shadow: 0 2px 8px rgba(233, 69, 96, 0.25);
 }
 
-.hero-therapy-badge {
-  position: absolute;
-  top: -6px;
-  right: 8px;
-  font-size: 10px;
-  font-weight: 600;
-  color: #ff4757;
-  background: rgba(255, 71, 87, 0.12);
-  border: 1px solid rgba(255, 71, 87, 0.3);
-  border-radius: 8px;
-  padding: 3px 8px;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  opacity: 0.9;
-  transition: all 0.2s ease;
-}
-
-.hero-therapy-featured:hover .hero-therapy-badge {
-  background: rgba(255, 71, 87, 0.2);
-  border-color: rgba(255, 71, 87, 0.5);
-  opacity: 1;
-}
+/* .hero-therapy-badge removed - orphaned CSS (badge element removed from HTML) */
 
 .hero-therapy-note {
   font-size: 11px;
@@ -3906,12 +3885,7 @@ textarea:focus-visible {
     padding: 8px 10px;
   }
   
-  .hero-therapy-badge {
-    font-size: 9px;
-    padding: 2px 6px;
-    top: -5px;
-    right: 6px;
-  }
+  /* .hero-therapy-badge mobile removed - orphaned CSS */
   
   .btn-therapy {
     padding: 12px 20px;
